@@ -1,0 +1,15 @@
+class Solution:
+  def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+    def countNodes(root):
+        if not root:#edge
+            return 0
+        return 1 + countNodes(root.left) + countNodes(root.right)#recursive call
+
+    leftCt = countNodes(root.left)
+    if leftCt < k:
+      if leftCt == k - 1:
+        return root.val
+      return self.kthSmallest(root.right, k-1-leftCt) 
+    if leftCt >= k:
+      return self.kthSmallest(root.left, k)
+    
