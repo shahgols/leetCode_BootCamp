@@ -1,0 +1,38 @@
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        #edge case
+        if source == target:
+            return 0
+        myRoutes = [set(route) for route in routes]
+
+        busStopsDict = defaultdict(list)
+        for i, route in enumerate(routes):
+            for stop in route:
+                busStopsDict[stop].append(i)
+      
+        busGraph = defaultdict(list)
+        for buses in busStopsDict.values():
+            busNums = len(buses)
+            for i in range(busNums):
+                for j in range(i + 1, busNums):
+                    first, second = buses[i], buses[j]
+                    busGraph[first].append(second)
+                    busGraph[second].append(first)
+      
+        queue = deque(busStopsDict[source])
+        numBuses = 1
+        busVisited = set(busStopsDict[source])
+        while queue:
+            for val in range(len(queue)):
+                currBus = queue.popleft()
+                if target in myRoutes[currBus]:
+                    return numBuses
+
+                for otherBus in busGraph[currBus]:
+                    if otherBus not in busVisited:
+                        busVisited.add(otherBus)
+                        queue.append(otherBus)
+
+            numBuses += 1
+
+        return -1
