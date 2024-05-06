@@ -1,0 +1,21 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        exists = set()
+        collumns = len(board)
+        rows = len(board[0])
+        for i in range(collumns):
+            for j in range(rows):
+                myNum = board[i][j]
+                if myNum == '.':
+                    continue
+                if myNum + ' row ' + str(i) in exists or myNum + ' col ' + str(j) in exists or myNum + ' square ' + str(i // 3) + str(j // 3) in exists:
+                    return False
+                exists.add(myNum + ' row ' + str(i))
+                exists.add(myNum + ' col ' + str(j))
+                exists.add(myNum + ' square ' + str(i // 3) + str(j // 3))
+
+        return True
+
+
+        
+
