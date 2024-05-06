@@ -1,0 +1,16 @@
+class Solution:
+  def canPartition(self, nums: List[int]) -> bool:
+    mySum = sum(nums)
+    if mySum & 1:
+      return False
+    return self.knapsack_(nums, mySum // 2)
+
+  def knapsack_(self, nums: List[int], subsetSum: int) -> bool:
+    result = [False] * (subsetSum + 1)
+    result[0] = True
+
+    for num in nums:
+      for i in range(subsetSum, num-1, -1):
+        result[i] = result[i] or result[i - num]
+
+    return result[subsetSum]
